@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Flutter App",
+      theme: ThemeData(primarySwatch: Colors.green, accentColor: Colors.black),
+      title: "Personal Expenses",
       home: MyHome(),
     );
   }
@@ -71,8 +72,15 @@ class _MyHomeState extends State<MyHome> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Expence Tracker"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.add))],
+        title: Text("Personal Expenses"),
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.add,
+                color: Theme.of(context).accentColor,
+              ))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
-class NewTransaction extends StatelessWidget {
+class NewTransaction extends StatefulWidget {
   final Function addTx;
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
 
   NewTransaction(this.addTx);
+
+  @override
+  _NewTransactionState createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
+  final titleController = TextEditingController();
+
+  final amountController = TextEditingController();
 
   void submitData() {
     final enteredTitle = titleController.text;
@@ -15,7 +22,11 @@ class NewTransaction extends StatelessWidget {
       return;
     }
 
-    addTx(enteredTitle, enteredAmount);
+    //with widget you can access the properties and methods
+    //of your widget class  in side of your state class
+    widget.addTx(enteredTitle, enteredAmount);
+
+    Navigator.of(context).pop(); //close the topmost display
   }
 
   @override
@@ -42,7 +53,7 @@ class NewTransaction extends StatelessWidget {
                 onPressed: submitData,
                 child: Text(
                   'Add Transaction',
-                  style: TextStyle(color: Colors.purple),
+                  style: TextStyle(color: Theme.of(context).primaryColor),
                 )),
           ],
         ),
