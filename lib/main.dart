@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
         accentColor: Colors.black,
+        errorColor: Colors.red,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
             headline1: TextStyle(
@@ -67,12 +68,12 @@ class _MyHomeState extends State<MyHome> {
     }).toList();
   }
 
-  void _addTrasnaction(String txTitle, double txAmount) {
+  void _addTrasnaction(String txTitle, double txAmount, DateTime Date) {
     final tx = Transcation(
         id: DateTime.now().toString(),
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now());
+        date: Date);
 
     print(tx);
     setState(() {
@@ -93,6 +94,14 @@ class _MyHomeState extends State<MyHome> {
         );
       },
     ); //builder function itself provide context nd we will naem it bCtx
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx) {
+        return tx.id == id;
+      });
+    });
   }
 
   @override
@@ -119,7 +128,7 @@ class _MyHomeState extends State<MyHome> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransaction),
-            TransactionList(_userTransactions),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
