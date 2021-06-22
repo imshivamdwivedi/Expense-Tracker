@@ -111,6 +111,48 @@ class _MyHomeState extends State<MyHome> {
     });
   }
 
+  List<Widget> _buildLandscapeContent(
+      MediaQueryData mediaQuery, AppBar appBar, Widget texList) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("show chart"),
+          Switch.adaptive(
+            activeColor: Theme.of(context).accentColor,
+            value: _showChart,
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            },
+          ),
+        ],
+      ),
+      _showChart
+          ? Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.65,
+              child: Chart(_recentTransaction))
+          : texList
+    ];
+  }
+
+  List<Widget> _buildPortaitContent(
+      MediaQueryData mediaQuery, AppBar appBar, Widget texList) {
+    return [
+      Container(
+          height: (mediaQuery.size.height -
+                  appBar.preferredSize.height -
+                  mediaQuery.padding.top) *
+              0.35,
+          child: Chart(_recentTransaction)),
+      texList
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -143,38 +185,8 @@ class _MyHomeState extends State<MyHome> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("show chart"),
-                Switch.adaptive(
-                  activeColor: Theme.of(context).accentColor,
-                  value: _showChart,
-                  onChanged: (val) {
-                    setState(() {
-                      _showChart = val;
-                    });
-                  },
-                ),
-              ],
-            ),
-          if (!isLandscape)
-            Container(
-                height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                    0.35,
-                child: Chart(_recentTransaction)),
-          if (!isLandscape) texList,
-          if (isLandscape)
-            _showChart
-                ? Container(
-                    height: (mediaQuery.size.height -
-                            appBar.preferredSize.height -
-                            mediaQuery.padding.top) *
-                        0.65,
-                    child: Chart(_recentTransaction))
-                : texList,
+            ..._buildLandscapeContent(mediaQuery, appBar, texList),
+          if (!isLandscape) ..._buildPortaitContent(mediaQuery, appBar, texList)
         ],
       ),
     );
